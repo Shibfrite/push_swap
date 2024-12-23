@@ -1,4 +1,18 @@
-static t_dnode	*remove_last_node(t_dnode	**head)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_last_node.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makurek <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/23 14:07:42 by makurek           #+#    #+#             */
+/*   Updated: 2024/12/23 14:10:32 by makurek          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
+
+t_dnode	*remove_last_node(t_dnode	**head)
 {
 	t_dnode	*last;
 

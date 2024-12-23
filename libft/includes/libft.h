@@ -6,7 +6,7 @@
 /*   By: makurek <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 14:23:28 by makurek           #+#    #+#             */
-/*   Updated: 2024/12/17 15:57:20 by makurek          ###   ########.fr       */
+/*   Updated: 2024/12/23 15:53:25 by makurek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ char	*ft_strrchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_atoi(const char *str);
-int		ft_isalnum(int c);
-int		ft_isalpha(int c);
-int		ft_isascii(int c);
-int		ft_isdigit(int c);
-int		ft_isprint(int c);
+int		ft_isalnum(const int c);
+int		ft_isalpha(const int c);
+int		ft_isascii(const int c);
+int		ft_isdigit(const int c);
+int		ft_isprint(const int c);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -53,5 +53,8 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+int		is_sign(const char c);
+int		is_space(const char c);
+char	*skip(const char *str, int is_something(const char));
 
 #endif

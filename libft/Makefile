@@ -47,7 +47,7 @@ STR_FILES   := \
 	ft_isalpha.c ft_split.c ft_strjoin.c ft_strncmp.c ft_tolower.c \
 	ft_isascii.c ft_strchr.c ft_strlcat.c ft_strnstr.c ft_toupper.c \
 	ft_isdigit.c ft_strcmp.c ft_strlcpy.c ft_strrchr.c \
-
+	is_sign.c is_space.c skip.c
 
 
 # Add prefixes for each directory to the respective files

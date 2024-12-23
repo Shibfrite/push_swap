@@ -6,13 +6,13 @@
 /*   By: makurek <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 17:40:37 by makurek           #+#    #+#             */
-/*   Updated: 2024/10/07 18:17:09 by makurek          ###   ########.fr       */
+/*   Updated: 2024/12/23 15:35:49 by makurek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isprint(int c)
+int	ft_isprint(const int c)
 {
 	return (c >= 32 && c <= 126);
 }

@@ -8,10 +8,12 @@ SRC_DIR 	:= srcs
 OBJ_DIR		:= objs
 LIBFT_DIR	:= libft
 
-SRC_FILES   := main
+SRC_FILES   := create_list.c remove_last_node.c \
+	create_node.c \
+	print_list.c swap_last_nodes.c ft_dlst_print.c \
+	push_on_other.c  main.c
 SRC_PREFIX  := $(SRC_DIR)/
-SRC_SUFFIX  := .c
-SRCS        := $(addprefix $(SRC_PREFIX),$(addsuffix $(SRC_SUFFIX),$(SRC_FILES)))
+SRCS        := $(addprefix $(SRC_PREFIX),$(SRC_FILES))
 
 OBJS		:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

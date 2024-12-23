@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_node.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makurek <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/23 14:06:47 by makurek           #+#    #+#             */
+/*   Updated: 2024/12/23 14:45:22 by makurek          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static t_dnode	*create_node(int value)
+#include "push_swap.h"
+
+t_dnode	*create_node(int value)
 {
 	int		*num;
-	t_dnode	new_node;
+	t_dnode	*new_node;
 
 	num = malloc(sizeof(int));
 	if (!num)

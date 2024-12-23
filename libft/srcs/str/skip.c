@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_list.c                                      :+:      :+:    :+:   */
+/*   skip.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: makurek <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/23 14:03:57 by makurek           #+#    #+#             */
-/*   Updated: 2024/12/23 14:09:54 by makurek          ###   ########.fr       */
+/*   Created: 2024/12/23 14:54:00 by makurek           #+#    #+#             */
+/*   Updated: 2024/12/23 15:50:27 by makurek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-t_dnode	*create_list(int start, int end)
+char *skip(const char *str, int is_something(const char))
 {
-	t_dnode	*head;
-	t_dnode	*new_node;
-	int		i;
-
-	head = NULL;
-	i = start;
-	while (i <= end)
-	{
-		new_node = create_node(i++);
-		if (!new_node)
-			return (NULL);
-		ft_dlstadd_back(&head, new_node);
-	}
-	return (head);
+    while (is_something(*str))
+        str++;
+    return ((char *)str);
 }
