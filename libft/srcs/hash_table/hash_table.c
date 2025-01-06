@@ -1,187 +1,95 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdint.h>
+#include "hash_table.h"
 
-#define MAX_NAME 256
-#define TABLE_SIZE 10
-#define DELETED_NODE (person*)(0xFFFFFFFFFFFUL)
-
-typedef struct {
-    char name[MAX_NAME];
-    int age;
-} person;
-
-typedef size_t (*hash_function)(const char *key);
-typedef size_t (*collision_resolution)(size_t index, size_t attempt);
-
-typedef struct {
-    person *table[TABLE_SIZE];
-    hash_function hash;
-    collision_resolution resolve;
-} hash_table;
-
-size_t hash_multiplication(const char *key)
+void hash_table_init(hash_table *ht, size_t size, hash_function hash, 
+					 compare_function compare, 
+					 collision_resolution_function resolve_collision,
+					 lookup_method_function lookup_method)
 {
-    size_t len;
-    size_t i;
-    unsigned int hash_value;
-    len = strnlen(key, MAX_NAME);
-    hash_value = 0;
-    i = 0;
-    while(i < len)
-    {
-        hash_value += key[i];
-        hash_value *= key[i];
-        hash_value %= TABLE_SIZE;
-        i++;
-    }
-    return hash_value;
+	ht->table = calloc(size, sizeof(void *));
+	ht->size = size;
+	ht->hash = hash;
+	ht->compare = compare;
+	ht->resolve_collision = resolve_collision;
+	ht->lookup_method = lookup_method;
 }
 
-size_t linear_probing(size_t index, size_t attempt)
+void	hash_table_print(hash_table *ht)
 {
-    return (index + attempt) % TABLE_SIZE;
+	size_t i;
+
+	if (!ht)
+		return ;
+	printf("Start\n");
+	i = 0;
+	while (i < TABLE_SIZE)
+	{
+		printf("\t%zu\t", i);
+		node *current = ht->table[i++];
+		while (current)
+		{
+			printf("%s -> ", (char *)current->data);
+			current = current->next;
+		}
+		printf("NULL\n");
+	}
+	printf("End\n");
 }
 
-void hash_table_init(hash_table *ht, hash_function hash, collision_resolution resolve)
+int hash_table_insert(hash_table *ht, void *data, size_t data_size)
 {
-    size_t i;
-    ht->hash = hash;
-    ht->resolve = resolve;
-    i = 0;
-    while(i < TABLE_SIZE)
-    {
-        ht->table[i] = NULL;
-        i++;
-    }
+	size_t index;
+	void *new_data;
+	int result;
+
+	if (!ht || !data)
+		return (0);
+	index = ht->hash(data) % ht->size;
+	new_data = malloc(data_size);
+	if (!new_data)
+		return (0);
+	memcpy(new_data, data, data_size);
+	result = ht->resolve_collision(ht, index, new_data);
+	if (!result)
+		free(new_data);
+	return (result);
 }
 
-void hash_table_print(hash_table *ht)
+void *hash_table_lookup(hash_table *ht, const void *key)
 {
-    size_t i;
-    if (!ht)
-        return;
-    i = 0;
-    printf("Start\n");
-    while(i < TABLE_SIZE)
-    {
-        if (ht->table[i] == DELETED_NODE)
-            printf("\t%zu\t-<deleted>-\n", i);
-        else if (ht->table[i])
-            printf("\t%zu\t%s\n", i, ht->table[i]->name);
-        else
-            printf("\t%zu\t---\n", i);
-        i++;
-    }
-    printf("End\n");
+	size_t	index;
+
+	if (!ht || !key)
+		return NULL;
+	index = ht->hash(key);
+	return (ht->lookup_method(ht, index, key));
 }
 
-int hash_table_insert(hash_table *ht, person *p)
+void *hash_table_delete(hash_table *ht, const void *key)
 {
-    size_t index;
-    size_t attempt;
-    size_t try;
-    if (!ht || !p)
-        return 0;
-    index = ht->hash(p->name);
-    attempt = 0;
-    while (attempt < TABLE_SIZE)
-    {
-        try = ht->resolve(index, attempt);
-        if (!ht->table[try] || ht->table[try] == DELETED_NODE)
-        {
-            ht->table[try] = p;
-            return 1;
-        }
-        attempt++;
-    }
-    return 0;
-}
+	size_t	index;
+	node	*current;
+	node	*prev;
+	void	*data;
 
-person *hash_table_lookup(hash_table *ht, char *name)
-{
-    size_t index;
-    size_t attempt;
-    size_t try;
-    if (!ht || !name)
-        return NULL;
-    index = ht->hash(name);
-    attempt = 0;
-    while (attempt < TABLE_SIZE)
-    {
-        try = ht->resolve(index, attempt);
-        if (!ht->table[try])
-            return NULL;
-        if (ht->table[try] != DELETED_NODE && !strncmp(ht->table[try]->name, name, MAX_NAME))
-            return ht->table[try];
-        attempt++;
-    }
-    return NULL;
-}
-
-person *hash_table_delete(hash_table *ht, char *name)
-{
-    size_t index;
-    size_t attempt;
-    size_t try;
-    person *tmp;
-    if (!ht || !name)
-        return NULL;
-    index = ht->hash(name);
-    attempt = 0;
-    while (attempt < TABLE_SIZE)
-    {
-        try = ht->resolve(index, attempt);
-        if (!ht->table[try])
-            return NULL;
-        if (ht->table[try] != DELETED_NODE && !strncmp(ht->table[try]->name, name, MAX_NAME))
-        {
-            tmp = ht->table[try];
-            ht->table[try] = DELETED_NODE;
-            return tmp;
-        }
-        attempt++;
-    }
-    return NULL;
-}
-
-int main()
-{
-    hash_table ht;
-    person *tmp;
-    hash_table_init(&ht, hash_multiplication, linear_probing);
-    hash_table_print(&ht);
-    person jacob = {.name="Jacob", .age=256};
-    person kate = {.name="Kate", .age=27};
-    person mpho = {.name="Mpho", .age=14};
-    person sarah = {.name="Sarah", .age=256};
-    person edna = {.name="Edna", .age=256};
-    person maren = {.name="Maren", .age=256};
-    person eliza = {.name="Eliza", .age=256};
-    person robert = {.name="Robert", .age=256};
-    person jane = {.name="Jane", .age=256};
-    hash_table_insert(&ht, &jacob);
-    hash_table_insert(&ht, &kate);
-    hash_table_insert(&ht, &mpho);
-    hash_table_insert(&ht, &sarah);
-    hash_table_insert(&ht, &edna);
-    hash_table_insert(&ht, &maren);
-    hash_table_insert(&ht, &eliza);
-    hash_table_insert(&ht, &robert);
-    hash_table_insert(&ht, &jane);
-    hash_table_print(&ht);
-    tmp = hash_table_lookup(&ht, "Mpho");
-    if (!tmp)
-        printf("Not found.\n");
-    else
-        printf("Found %s.\n", tmp->name);
-    tmp = hash_table_lookup(&ht, "George");
-    if (!tmp)
-        printf("Not found.\n");
-    else
-        printf("Found %s.\n", tmp->name);
-    hash_table_delete(&ht, "Mpho");
-    hash_table_print(&ht);
-    return 0;
+	if (!ht || !key)
+		return (NULL);
+	index = ht->hash(key);
+	current = ht->table[index];
+	prev = NULL;
+	while (current)
+	{
+		if (!ht->compare(current->data, key))
+		{
+			data = current->data;
+			if (prev)
+				prev->next = current->next;
+			else
+				ht->table[index] = current->next;
+			free(current);
+			return (data);
+		}
+		prev = current;
+		current = current->next;
+	}
+	return (NULL);
 }

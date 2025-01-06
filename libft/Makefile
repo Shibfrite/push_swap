@@ -19,8 +19,9 @@ LIST_DIR    := srcs/list
 MEMORY_DIR  := srcs/memory
 PRINT_DIR   := srcs/print
 STR_DIR     := srcs/str
+HASH_DIR    := srcs/hash_table
 OBJ_DIR     := objs
-OBJ_SUBDIRS := $(OBJ_DIR)/dlist $(OBJ_DIR)/list $(OBJ_DIR)/memory $(OBJ_DIR)/print $(OBJ_DIR)/str
+OBJ_SUBDIRS := $(OBJ_DIR)/dlist $(OBJ_DIR)/list $(OBJ_DIR)/memory $(OBJ_DIR)/print $(OBJ_DIR)/str $(OBJ_DIR)/hash_table
 
 # ==========================
 # Source Files
@@ -49,6 +50,8 @@ STR_FILES   := \
 	ft_isdigit.c ft_strcmp.c ft_strlcpy.c ft_strrchr.c \
 	is_sign.c is_space.c skip.c
 
+HASH_FILES  := \
+    hash_table.c hash_functions.c collision_resolution.c utility.c
 
 # Add prefixes for each directory to the respective files
 SRCS        := $(addprefix $(SRC_DIR)/, $(SRC_FILES)) \
@@ -56,7 +59,8 @@ SRCS        := $(addprefix $(SRC_DIR)/, $(SRC_FILES)) \
                $(addprefix $(LIST_DIR)/, $(LIST_FILES)) \
                $(addprefix $(MEMORY_DIR)/, $(MEMORY_FILES)) \
                $(addprefix $(PRINT_DIR)/, $(PRINT_FILES)) \
-               $(addprefix $(STR_DIR)/, $(STR_FILES))
+               $(addprefix $(STR_DIR)/, $(STR_FILES))  \
+               $(addprefix $(HASH_DIR)/, $(HASH_FILES))
 
 # ==========================
 # Object Files
