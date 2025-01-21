@@ -36,7 +36,7 @@ typedef struct node {
 } node;
 
 // Function prototypes
-void hash_table_init(hash_table *ht, size_t size, hash_function hash, compare_function compare, collision_resolution_function resolve_collision, lookup_method_function lookup_method);
+void hash_table_init(hash_table *ht);
 void hash_table_print(hash_table *ht);
 int hash_table_insert(hash_table *ht, void *data, size_t data_size);
 void *hash_table_lookup(hash_table *ht, const void *key);

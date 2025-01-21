@@ -1,17 +1,16 @@
 NAME		:= push_swap
 
 CC			:= gcc
-CFLAGS		:= -Wall -Wextra -Werror
+CFLAGS		:= -Wall -Wextra -Werror -g
 
 INC_DIR 	:= includes
 SRC_DIR 	:= srcs
 OBJ_DIR		:= objs
 LIBFT_DIR	:= libft
 
-SRC_FILES   := create_list.c remove_last_node.c \
-	create_node.c \
-	print_list.c swap_last_nodes.c ft_dlst_print.c \
-	push_on_other.c  main.c
+SRC_FILES   := create_list.c remove_last_node.c create_node.c \
+	print_list.c swap.c ft_dlst_print.c parse.c \
+	push.c  rotate.c main.c reverse_rotate.c list_op.c
 SRC_PREFIX  := $(SRC_DIR)/
 SRCS        := $(addprefix $(SRC_PREFIX),$(SRC_FILES))
 
@@ -31,7 +30,6 @@ $(NAME):	$(OBJS) $(LIBFT)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(DIRS)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
-	echo "objects compiled."
 
 RM			:= rm -rf
 

@@ -1,108 +1,176 @@
 #include "push_swap.h"
-#include <limits.h>
 
-#define SUCCESS 0
-#define ERROR -1
-
-int handle_sign(const char **str)
+int	check_input(int argc, char *argv[], t_stacks *stacks)
 {
-    int sign = 1;
-    if (is_sign(**str))
-    {
-        sign = (**str == '-') ? -1 : 1;
-        (*str)++;
+	int i;
+	int result;
+	int nbr_elements;
+
+	if (argc < 2)
+	{
+		printf("Error: Not enough arguments provided.\n");
+		return (ERROR);
+	}
+	hash_table ht;
+	hash_table_init(&ht);
+	nbr_elements = 0;
+	for (i = 1; i < argc; i++)
+	{
+		result = parse_string(argv[i], &stacks->a, &ht);
+
+		if (result == ERROR)
+		{
+			printf("Error: Invalid input in argument %d.\n", i);
+			ft_dlstclear(&stacks->a, NULL);
+			return (ERROR);
+		}
+		nbr_elements += result;
+	}
+	return (nbr_elements);
+}
+
+void sort_three_hardcode(t_stacks *stack)
+{
+	int a = *(int*)stack->a->data;
+	int b = *(int*)stack->a->next->data;
+	int c = *(int*)stack->a->next->next->data;
+
+	if (a > b && b < c && a < c)
+		sa(stack);
+	else if (a > b && b > c)
+	{
+		sa(stack);
+		rra(stack, 1);
+	}
+	else if (a > b && b < c && a > c)
+		ra(stack, 1);
+	else if (a < b && b > c && a < c)
+	{
+		sa(stack);
+		ra(stack, 1);
+	}
+	else if (a < b && b > c && a > c)
+		rra(stack, 1);
+}
+
+int is_sorted(t_dnode *stack)
+{
+	while (stack && stack->next)
+	{
+		if (*(int*)stack->data > *(int*)stack->next->data)
+			return 0;
+		stack = stack->next;
+	}
+	return 1;
+}
+
+int get_closest_index(t_stacks *stacks) {
+    if (!stacks || !stacks->a || !stacks->b)
+        return 0;
+
+    t_dnode *current = stacks->b;
+    int target = *(int*)stacks->a->data;
+    int closest_index = -1;
+    int closest_value = INT_MIN;
+    int index = 0;
+
+    while (current) {
+        int current_value = *(int*)current->data;
+        if ((((current_value > closest_value) || (closest_value > target)) && current_value < target) || (current_value > target && ((closest_value > target) || (closest_index == -1)) && current_value > closest_value))
+		{
+            closest_value = current_value;
+            closest_index = index;
+        }
+        current = current->next;
+        index++;
     }
-    return sign;
+
+		printf("{%d}\n", closest_index);
+    return (closest_index == -1) ? 0 : closest_index;
 }
 
-int parse_number(const char **str, int *num)
+int find_max_index(t_dnode *head)
 {
-    long long temp = 0;
-    int sign = handle_sign(str);
+    if (!head)
+        return -1;
 
-    if (!ft_isdigit(**str))
-        return (ERROR);
+    t_dnode *current = head;
+    int max_value = *(int*)current->data;
+    int max_index = 0;
+    int current_index = 0;
 
-    while (ft_isdigit(**str))
+    while (current)
     {
-        temp = temp * 10 + (**str - '0');
-        if (temp * sign > INT_MAX || temp * sign < INT_MIN)
-            return (ERROR); // Integer overflow
-        (*str)++;
+        int current_value = *(int*)current->data;
+        if (current_value > max_value)
+        {
+            max_value = current_value;
+            max_index = current_index;
+        }
+        current = current->next;
+        current_index++;
     }
 
-    *num = (int)(temp * sign);
-    return (SUCCESS);
+    return max_index;
 }
 
-int add_to_list(t_dnode **dlist, int num)
-{
-    t_dnode *new_node = create_node(num);
-    if (!new_node)
-        return (ERROR); // Memory allocation failure
-
-    ft_dlstadd_back(dlist, new_node);
-    return (SUCCESS);
-}
-
-int parse_and_add(const char *str, t_dnode **dlist)
-{
-    int num;
-
-    str = skip(str, is_space);
-    if (parse_number(&str, &num) == ERROR)
-        return (ERROR);
-    str = skip(str, is_space);
-    if (*str != '\0')
-        return (ERROR);
-    return add_to_list(dlist, num);
-}
-
-int parse_string(const char *str, t_dnode **dlist)
-{
-    int num;
-
-    while (*str)
+void sort_turk(t_stacks *stacks, t_list **operations_list) {
+    while (stacks->a)
     {
-    	str = skip(str, is_space);
-        if (*str == '\0')
-            break;
+        if (stacks->b) {
+            int closest = get_closest_index(stacks);
+            add_operation(operations_list, stacks, "rb", closest);
+        }
+        add_operation(operations_list, stacks, "pb", 1);
 
-        if (parse_number(&str, &num) == ERROR)
-            return (ERROR);
-
-        if (add_to_list(dlist, num) == ERROR)
-            return (ERROR);
+        // Debug output (optional)
+        write(1,"a:\n",2);
+        print_list(stacks->a);
+        write(1,"b:\n",2);
+        print_list(stacks->b);
+		printf("-------");
     }
+    add_operation(operations_list, stacks, "rb", find_max_index(stacks->b));
+    while (stacks->b)
+        add_operation(operations_list, stacks, "pa", 1);
+}
 
-    return (SUCCESS);
+void sort_three(t_stacks *stacks) {
+	t_list *operations_list = NULL;
+	sort_turk(stacks, &operations_list);
+	optimize_operations(&operations_list);
+	execute_operations(operations_list);
+	ft_lstclear(&operations_list, free_operation);
+}
+
+void	sort(int nbr_elements, t_stacks *stacks)
+{
+	if (nbr_elements == 2)
+		if (!is_sorted(stacks->a))
+		{
+			ft_putendl_fd("sa", 1);
+			sa(stacks);
+		}
+	if (nbr_elements == 3)
+		sort_three_hardcode(stacks);
+	else if (nbr_elements > 3)
+		sort_three(stacks);
 }
 
 int main(int argc, char *argv[])
 {
-    t_dnode *dlist = NULL;
-    int i, result;
+	t_stacks	stacks;
+	int			nbr_elements;
 
-    if (argc < 2)
-    {
-        printf("Error: Not enough arguments provided.\n");
-        return (ERROR);
-    }
+	stacks.a = NULL;
+	stacks.b = NULL;
+	nbr_elements = check_input(argc, argv, &stacks);
+	if (nbr_elements == ERROR)
+		return (0);
+	print_list(stacks.a);
+	sort(nbr_elements, &stacks);
+	print_list(stacks.a);
 
-    for (i = 1; i < argc; i++)
-    {
-        result = parse_string(argv[i], &dlist);
-
-        if (result == ERROR)
-        {
-            printf("Error: Invalid input in argument %d.\n", i);
-            ft_dlstclear(&dlist, NULL);
-            return (ERROR);
-        }
-    }
-
-	print_list(dlist);
-
-    ft_dlstclear(&dlist, NULL);
-    return (SUCCESS);
+	ft_dlstclear(&stacks.a, NULL);
+	return (SUCCESS);
 }

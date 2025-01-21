@@ -12,18 +12,17 @@
 
 #include "push_swap.h"
 
-t_dnode	*remove_last_node(t_dnode	**head)
+t_dnode *remove_first_node(t_dnode **head)
 {
-	t_dnode	*last;
+    t_dnode *first;
 
-	last = ft_dlstlast(*head);
-	if (!last)
-		return (NULL);
-	if (last->prev)
-		last->prev->next = NULL;
-	else
-		*head = NULL;
-	last->prev = NULL;
-	last->next = NULL;
-	return (last);
+    if (!(head && *head))
+        return (NULL);
+    first = *head;
+    *head = first->next;
+    if (*head)
+        (*head)->prev = NULL;
+    first->prev = NULL;
+    first->next = NULL;
+    return (first);
 }

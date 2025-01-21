@@ -1,16 +1,12 @@
 #include "hash_table.h"
 
-void hash_table_init(hash_table *ht, size_t size, hash_function hash, 
-					 compare_function compare, 
-					 collision_resolution_function resolve_collision,
-					 lookup_method_function lookup_method)
-{
-	ht->table = calloc(size, sizeof(void *));
-	ht->size = size;
-	ht->hash = hash;
-	ht->compare = compare;
-	ht->resolve_collision = resolve_collision;
-	ht->lookup_method = lookup_method;
+void hash_table_init(hash_table *ht) {
+    ht->size = TABLE_SIZE; // Default size
+    ht->hash = hash_multiplication; // Default hash function
+    ht->compare = compare_strings; // Default compare function
+    ht->resolve_collision = chaining_resolution; // Default collision resolution
+    ht->lookup_method = chaining_lookup; // Default lookup method
+    ht->table = calloc(ht->size, sizeof(void *));
 }
 
 void	hash_table_print(hash_table *ht)
@@ -37,19 +33,17 @@ void	hash_table_print(hash_table *ht)
 
 int hash_table_insert(hash_table *ht, void *data, size_t data_size)
 {
-	size_t index;
 	void *new_data;
 	int result;
 
 	if (!ht || !data)
-		return (0);
-	index = ht->hash(data) % ht->size;
+		return (-1);
 	new_data = malloc(data_size);
 	if (!new_data)
-		return (0);
+		return (-1);
 	memcpy(new_data, data, data_size);
-	result = ht->resolve_collision(ht, index, new_data);
-	if (!result)
+	result = ht->resolve_collision(ht, ht->hash(new_data), new_data);
+	if (result == -1)
 		free(new_data);
 	return (result);
 }

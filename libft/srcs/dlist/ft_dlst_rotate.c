@@ -1,44 +1,44 @@
 #include "libft_list.h"
 
-static void make_circular(t_dnode *head)
+static t_dnode *ft_dlstnth(t_dnode *head, int n)
 {
-    if (!head)
-        return;
-    t_dnode *last = ft_dlstlast(head);
-    last->next = head;
-    head->prev = last;
-}
-
-static void break_circular(t_dnode *head)
-{
-    if (!head)
-        return;
-    t_dnode *last = head->prev;
-    last->next = NULL;
-    head->prev = NULL;
+    while (n > 0 && head)
+    {
+        head = head->next;
+        n--;
+    }
+    while (n < 0 && head)
+    {
+        head = head->prev;
+        n++;
+    }
+    return head;
 }
 
 t_dnode *ft_dlst_rotate(t_dnode **head, int k)
 {
     int size;
-    t_dnode *new_head;
+    t_dnode *new_head, *last;
 
     if (!head || !*head || !(*head)->next || !k)
-        return (*head);
+        return *head;
 
     size = ft_dlstsize(*head);
     k %= size;
     if (!k)
-        return (*head);
+        return *head;
 
-    make_circular(*head);
-
-    new_head = *head;
-    for (int i = 0; i < k; i++)
-        new_head = new_head->next;
-
-    break_circular(new_head);
+    last = ft_dlstlast(*head);
+    last->next = *head;
+    (*head)->prev = last;
+	if (k > 0)
+    	new_head = ft_dlstnth(*head, k);
+	else
+		new_head = ft_dlstnth(*head, size + k);
+    new_head->prev->next = NULL;
+    new_head->prev = NULL;
     *head = new_head;
 
-    return (*head);
+    return *head;
 }
+
