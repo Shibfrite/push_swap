@@ -64,83 +64,92 @@ int is_sorted(t_dnode *stack)
 	return 1;
 }
 
-int get_closest_index(t_stacks *stacks) {
-    if (!stacks || !stacks->a || !stacks->b)
-        return 0;
+int get_closest_index(t_dnode *first, t_dnode *second)
+{
+	t_dnode *current = first;
+	int target = *(int*)second->data;
+	int closest_index = -1;
+	int closest_value = INT_MIN;
+	int index = 0;
 
-    t_dnode *current = stacks->b;
-    int target = *(int*)stacks->a->data;
-    int closest_index = -1;
-    int closest_value = INT_MIN;
-    int index = 0;
-
-    while (current) {
-        int current_value = *(int*)current->data;
-        if ((((current_value > closest_value) || (closest_value > target)) && current_value < target) || (current_value > target && ((closest_value > target) || (closest_index == -1)) && current_value > closest_value))
+	while (current) {
+		int current_value = *(int*)current->data;
+		if ((((current_value > closest_value) || (closest_value > target)) && current_value < target) || (current_value > target && ((closest_value > target) || (closest_index == -1)) && current_value > closest_value))
 		{
-            closest_value = current_value;
-            closest_index = index;
-        }
-        current = current->next;
-        index++;
-    }
+			closest_value = current_value;
+			closest_index = index;
+		}
+		current = current->next;
+		index++;
+	}
 
 		printf("{%d}\n", closest_index);
-    return (closest_index == -1) ? 0 : closest_index;
+	return (closest_index == -1) ? 0 : closest_index;
 }
 
 int find_max_index(t_dnode *head)
 {
-    if (!head)
-        return -1;
+	if (!head)
+		return -1;
 
-    t_dnode *current = head;
-    int max_value = *(int*)current->data;
-    int max_index = 0;
-    int current_index = 0;
+	t_dnode *current = head;
+	int max_value = *(int*)current->data;
+	int max_index = 0;
+	int current_index = 0;
 
-    while (current)
-    {
-        int current_value = *(int*)current->data;
-        if (current_value > max_value)
-        {
-            max_value = current_value;
-            max_index = current_index;
-        }
-        current = current->next;
-        current_index++;
-    }
+	while (current)
+	{
+		int current_value = *(int*)current->data;
+		if (current_value > max_value)
+		{
+			max_value = current_value;
+			max_index = current_index;
+		}
+		current = current->next;
+		current_index++;
+	}
 
-    return max_index;
+	return max_index;
 }
 
-void sort_turk(t_stacks *stacks, t_list **operations_list) {
-    while (stacks->a)
-    {
-        if (stacks->b) {
-            int closest = get_closest_index(stacks);
-            add_operation(operations_list, stacks, "rb", closest);
-        }
-        add_operation(operations_list, stacks, "pb", 1);
+void sort_turk(t_stacks *stacks, t_dnode **operations_list, int total)
+{
+	int i;
+	int closest;	
 
-        // Debug output (optional)
-        write(1,"a:\n",2);
-        print_list(stacks->a);
-        write(1,"b:\n",2);
-        print_list(stacks->b);
+	i = total;
+	while (stacks->a && i > 2)
+	{
+		if (stacks->b) {
+			closest = get_closest_index(stacks->b, stacks->a);
+			add_operation(operations_list, stacks, "rb", closest);
+		}
+		add_operation(operations_list, stacks, "pb", 1);
+
+		// Debug output (optional)
+		write(1,"a:\n",2);
+		print_list(stacks->a);
+		write(1,"b:\n",2);
+		print_list(stacks->b);
 		printf("-------");
-    }
-    add_operation(operations_list, stacks, "rb", find_max_index(stacks->b));
-    while (stacks->b)
-        add_operation(operations_list, stacks, "pa", 1);
+		i--;
+	}
+	while (stacks->b)
+	{
+		closest = get_closest_index(stacks->a, stacks->b);
+		add_operation(operations_list, stacks, "ra", closest + 1);
+		add_operation(operations_list, stacks, "pa", 1);
+	}
+	add_operation(operations_list, stacks, "ra", find_max_index(stacks->a) + 1);
 }
 
-void sort_three(t_stacks *stacks) {
-	t_list *operations_list = NULL;
-	sort_turk(stacks, &operations_list);
-	optimize_operations(&operations_list);
+void sort_three(t_stacks *stacks, int total)
+{
+	t_dnode *operations_list = NULL;
+	sort_turk(stacks, &operations_list, total);
+	optimize_operations(&operations_list, total);
 	execute_operations(operations_list);
-	ft_lstclear(&operations_list, free_operation);
+	ft_dlstclear(&operations_list, free_operation);
 }
 
 void	sort(int nbr_elements, t_stacks *stacks)
@@ -154,7 +163,7 @@ void	sort(int nbr_elements, t_stacks *stacks)
 	if (nbr_elements == 3)
 		sort_three_hardcode(stacks);
 	else if (nbr_elements > 3)
-		sort_three(stacks);
+		sort_three(stacks, nbr_elements);
 }
 
 int main(int argc, char *argv[])
