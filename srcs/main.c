@@ -82,8 +82,6 @@ int get_closest_index(t_dnode *first, t_dnode *second)
 		current = current->next;
 		index++;
 	}
-
-		printf("{%d}\n", closest_index);
 	return (closest_index == -1) ? 0 : closest_index;
 }
 
@@ -125,13 +123,6 @@ void sort_turk(t_stacks *stacks, t_dnode **operations_list, int total)
 			add_operation(operations_list, stacks, "rb", closest);
 		}
 		add_operation(operations_list, stacks, "pb", 1);
-
-		// Debug output (optional)
-		write(1,"a:\n",2);
-		print_list(stacks->a);
-		write(1,"b:\n",2);
-		print_list(stacks->b);
-		printf("-------");
 		i--;
 	}
 	while (stacks->b)
