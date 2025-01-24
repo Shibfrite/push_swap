@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*										*/
 /*							:::	  ::::::::   */
-/*   push_on_other.c					:+:	  :+:	:+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*							+:+ +:+	 +:+	 */
 /*   By: makurek <marvin@42.fr>			 +#+  +:+	   +#+	*/
 /*						+#+#+#+#+#+   +#+	   */
 /*   Created: 2024/12/23 14:07:37 by makurek	   #+#	#+#		 */
-/*   Updated: 2024/12/23 14:10:28 by makurek	  ###   ########.fr	   */
+/*   Updated: 2025/01/24 16:01:34 by makurek          ###   ########.fr       */
 /*										*/
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	push(t_dnode **first_stack, t_dnode **second_stack)
 		ft_dlstadd_front(second_stack, first_node);
 }
 
-static void	 push_print(t_stacks *stacks, char *op)
+static void	push_print(t_stacks *stacks, char *op)
 {
 	if (!stacks)
 		return ;

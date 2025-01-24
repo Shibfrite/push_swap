@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-static void rotate_print(t_stacks *stacks, int rotation, char *op)
+static void	rotate_print(t_stacks *stacks, int rotation, char *op)
 {
 	if (!stacks || !rotation)
 		return ;

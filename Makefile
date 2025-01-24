@@ -1,7 +1,7 @@
 NAME		:= push_swap
 
 CC			:= gcc
-CFLAGS		:= -Wall -Wextra -Werror -g
+CFLAGS		:= #-Wall -Wextra -Werror -g
 
 INC_DIR 	:= includes
 SRC_DIR 	:= srcs

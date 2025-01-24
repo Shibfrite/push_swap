@@ -1,57 +1,63 @@
 #include "push_swap.h"
 
-static int handle_sign(const char **str)
+static int	handle_sign(const char **str)
 {
-	int sign = 1;
+	int	sign;
+
+	sign = 1;
 	if (is_sign(**str))
 	{
-		sign = (**str == '-') ? -1 : 1;
+		if (**str == '-')
+			sign = -1;
+		else
+			sign = 1;
 		(*str)++;
 	}
-	return sign;
+	return (sign);
 }
 
-static int parse_number(const char **str, int *num)
+static int	parse_number(const char **str, int *num)
 {
-	long long temp = 0;
-	int sign = handle_sign(str);
+	long long	temp;
+	int			sign;
 
+	temp = 0;
+	sign = handle_sign(str);
 	if (!ft_isdigit(**str))
 		return (ERROR);
-
 	while (ft_isdigit(**str))
 	{
 		temp = temp * 10 + (**str - '0');
 		if (temp * sign > INT_MAX || temp * sign < INT_MIN)
-			return (ERROR); // Integer overflow
+			return (ERROR);
 		(*str)++;
 	}
-
 	*num = (int)(temp * sign);
 	return (SUCCESS);
 }
 
-static int add_to_list(t_dnode **dlist, int num)
+static int	add_to_list(t_dnode **dlist, int num)
 {
-	t_dnode *new_node = create_node(num);
-	if (!new_node)
-		return (ERROR); // Memory allocation failure
+	t_dnode	*new_node;
 
+	new_node = create_node(num);
+	if (!new_node)
+		return (ERROR);
 	ft_dlstadd_back(dlist, new_node);
 	return (SUCCESS);
 }
 
-int parse_string(const char *str, t_dnode **dlist, hash_table *ht)
+int	parse_string(const char *str, t_dnode **dlist, hash_table *ht)
 {
-	int num;
-	int count;
+	int	num;
+	int	count;
 
-		count = 0;
+	count = 0;
 	while (*str)
 	{
 		str = skip(str, is_space);
 		if (*str == '\0')
-			break;
+			break ;
 		if (parse_number(&str, &num) == ERROR)
 			return (ERROR);
 		if (add_to_list(dlist, num) == ERROR)
