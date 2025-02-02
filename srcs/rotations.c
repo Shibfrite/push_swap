@@ -122,4 +122,4 @@ int	optimize_rotations(t_dnode **head, t_dnode *current, int total)
 	if (handle_rr_rrr(head, current, curr_op, next_op))
 		return (1);
 	return (0);
-}
+} //rra rrb?
