@@ -60,15 +60,15 @@ void	sort_five(t_stacks *stacks, t_dnode **operations_list, int total)
 	add_operation(operations_list, stacks, "pb", 1);
 	add_operation(operations_list, stacks, "pb", 1);
 	sort_three(stacks, operations_list);
-	closest = find_target_position(stacks->a, stacks->b);
-	add_operation(operations_list, stacks, "ra", closest + 1);
+	add_operation(operations_list, stacks, "ra", closest);
+	closest = lowest_cost_index(stacks->a, stacks->b, 3);
+	add_operation(operations_list, stacks, "ra", closest);
 	add_operation(operations_list, stacks, "pa", 1);
-	closest = find_target_position(stacks->a, stacks->b);
-	add_operation(operations_list, stacks, "ra", closest + 1);
+	closest = lowest_cost_index(stacks->a, stacks->b, 3);
+	add_operation(operations_list, stacks, "ra", closest);
 	add_operation(operations_list, stacks, "pa", 1);
 	closest = find_max_index(stacks->a);
-	add_operation(operations_list, stacks, "ra", closest + 1);
-
+	add_operation(operations_list, stacks, "ra", closest);
 	//ft_dlstclear(operations_list, free_operation);
 }
 

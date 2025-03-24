@@ -1,35 +1,5 @@
 #include "push_swap.h"
 
-int	check_input(int argc, char *argv[], t_stacks *stacks)
-{
-	int			i;
-	int			result;
-	int			nbr_elements;
-	hash_table	ht;
-
-	if (argc < 2)
-	{
-		printf("Error: Not enough arguments provided.\n");
-		return (ERROR);
-	}
-	hash_table_init(&ht);
-	nbr_elements = 0;
-	i = 1;
-	while (i < argc)
-	{
-		result = parse_string(argv[i], &stacks->a, &ht);
-		if (result == ERROR)
-		{
-			printf("Error: Invalid input in argument %d.\n", i);
-			ft_dlstclear(&stacks->a, NULL);
-			return (ERROR);
-		}
-		nbr_elements += result;
-		i++;
-	}
-	return (nbr_elements);
-}
-
 int	is_sorted(t_dnode *stack)
 {
 	while (stack && stack->next)
@@ -102,6 +72,33 @@ int find_target_position(t_dnode *node, t_dnode *target_head) {
         pos++;
     }
     return (target_val == INT_MIN) ? max_pos : target_pos;
+}
+
+int	lowest_cost_index(t_dnode *head, t_dnode *target_stack, int total)
+{
+	int		i;
+	int		lowest_cost;
+	int		lowest_cost_index;
+	int		current;
+	t_dnode	*current_node;
+
+	if (!head || !target_stack || total <= 0)
+		return (0);
+	i = 0;
+	current_node = head;
+	lowest_cost_index = 0;
+	lowest_cost = find_target_position(current_node, target_stack) + i;
+	while (++i <= total - 1 && current_node)
+	{
+		current_node = current_node->next;
+		current = find_target_position(current_node, target_stack) + i;
+		if (current < lowest_cost)
+		{
+			lowest_cost = current;
+			lowest_cost_index = i;
+		}
+	}
+	return (lowest_cost_index);
 }
 
 int	find_max_index(t_dnode *head)
