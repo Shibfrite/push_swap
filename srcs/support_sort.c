@@ -41,8 +41,7 @@ int	get_closest_index(t_dnode *first, t_dnode *second)
 	}
 	if (closest_index == -1)
 		return (0);
-	else
-		return (closest_index);
+	return (closest_index);
 }
 
 int find_target_position(t_dnode *node, t_dnode *target_head) {
@@ -52,27 +51,59 @@ int find_target_position(t_dnode *node, t_dnode *target_head) {
     int max_val = INT_MIN;
     int max_pos = 0;
     int pos = 0;
+    int current_data;
+    int node_data;
 
-    while (current) {
-        // Cast node->data to int* and dereference to get the integer value
-        int current_data = *(int *)current->data;
-        int node_data = *(int *)node->data;
-
-        // Track largest smaller value
-        if (current_data < node_data && current_data > target_val) {
+	if (!node || !target_head)
+		return (ERROR);
+    while (current)
+	{
+        current_data = *(int *)current->data;
+        node_data = *(int *)node->data;
+        if (current_data < node_data && current_data > target_val)
+		{
             target_val = current_data;
             target_pos = pos;
         }
-        // Track overall maximum
-        if (current_data > max_val) {
+        if (current_data > max_val)
+		{
             max_val = current_data;
             max_pos = pos;
         }
         current = current->next;
         pos++;
     }
-    return (target_val == INT_MIN) ? max_pos : target_pos;
+	if (target_val == INT_MIN)
+		return (max_pos);
+	return (target_pos);
 }
+
+/*
+ *int find_target_position(t_dnode *node, t_dnode *target_head) {
+    t_dnode *current = target_head;
+    int best_pos = 0, max_pos = 0, node_data = *(int *)node->data;
+    int pos = 0;
+
+    while (current) {
+        int current_data = *(int *)current->data;
+
+        // Track the largest value in stack A
+        if (current_data > *(int *)(target_head + max_pos)->data)
+            max_pos = pos;
+
+        // Track the largest value smaller than node_data
+        if (current_data < node_data && 
+            (best_pos == 0 || current_data > *(int *)(target_head + best_pos)->data))
+            best_pos = pos;
+
+        current = current->next;
+        pos++;
+    }
+
+    // If no valid "smaller" position was found, return the position of the largest value
+    return (*(int *)(target_head + best_pos)->data < node_data) ? best_pos : max_pos;
+}
+ * */
 
 int	lowest_cost_index(t_dnode *head, t_dnode *target_stack, int total)
 {
@@ -87,7 +118,7 @@ int	lowest_cost_index(t_dnode *head, t_dnode *target_stack, int total)
 	i = 0;
 	current_node = head;
 	lowest_cost_index = 0;
-	lowest_cost = find_target_position(current_node, target_stack) + i;
+	lowest_cost = find_target_position(current_node, target_stack);
 	while (++i <= total - 1 && current_node)
 	{
 		current_node = current_node->next;

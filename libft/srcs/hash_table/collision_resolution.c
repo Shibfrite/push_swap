@@ -5,7 +5,7 @@ void* chaining_lookup(hash_table *ht, size_t index, const void *key)
 	node	*current;
 
 	if (!ht || index >= ht->size)
-		return (NULL;
+		return (NULL);
 	current = ht->table[index];
 	while (current)
 	{

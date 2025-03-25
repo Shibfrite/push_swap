@@ -76,9 +76,9 @@ int     get_closest_index(t_dnode *first, t_dnode *second);
 int		find_target_position(t_dnode *node, t_dnode *target_head);
 //Input:		`node` (to insert), `target_head` (stack A).
 //Output:		Position index in A for `node`.
-//Purpose:		Determines where to place `node` in A for minimal rotations.
+//Purpose:		Finds where to insert node depending on its value in target_head. so either return the largest value smaller than node or the largest value if node is smaller than all the elements
 //#####
-//Note:		Check logic if all elements in A are larger than `node`.
+//Note:			Error on duplicate.
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -87,16 +87,14 @@ int		lowest_cost_index(t_dnode *head, t_dnode *target_stack, int total);
 //Output:		Index of B node with lowest rotation cost.
 //Purpose:		Selects optimal B node to move to A first.
 //#####
-//Note:		Verify loop bounds (`i <= total - 1`).
+//Note:			total must be correct.
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 int     find_max_index(t_dnode *head);
 //Input:		Stack to search.
 //Output:		Index of maximum value.
-//Purpose:		Finds position of largest element (for small-stack sorting).
-//#####
-//Note:		Returns `-1` if stack is empty (ensure handled).
+//Purpose:		Finds position of largest value element.
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -149,7 +147,7 @@ void	optimize_operations(t_dnode **head, int total);
 
 //	======operation.c=====
 
-//Prototype:		void execute_single_operation(t_stacks *stacks, const char *op_name, int rotation_count)  
+//Prototype:	void execute_single_operation(t_stacks *stacks, const char *op_name, int rotation_count)  
 //Input:		Stacks, operation name, rotation count.  
 //Output:		None.  
 //Purpose:		Maps command names to stack operations (e.g., "sa" → `sa()`).  
@@ -193,7 +191,7 @@ int     check_input(int argc, char *argv[], t_stacks *stacks);
 //Output:		Number of elements or `ERROR`.
 //Purpose:		Validates input, parses numbers, checks duplicates via hash table.
 //#####
-//Note:			Hash table (`ht`) not freed on early exit (leak). Error messages use `printf` (consider `stderr`). Maybe change file?
+//Note:			Hash table (`ht`) not freed on early exit (leak)
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 

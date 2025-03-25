@@ -1,36 +1,5 @@
 #include "push_swap.h"
 
-int	check_input(int argc, char *argv[], t_stacks *stacks)
-{
-	int			i;
-	int			result;
-	int			nbr_elements;
-	hash_table	ht;
-
-	if (argc < 2)
-	{
-		printf("Error: Not enough arguments provided.\n");
-		return (ERROR);
-	}
-	if (hash_table_init(&ht) == ERROR)
-    	return (ERROR);  
-	nbr_elements = 0;
-	i = 1;
-	while (i < argc)
-	{
-		result = parse_string(argv[i], &stacks->a, &ht);
-		if (result == ERROR)
-		{
-			printf("Error: Invalid input in argument %d.\n", i);
-			ft_dlstclear(&stacks->a, NULL);
-			return (ERROR);
-		}
-		nbr_elements += result;
-		i++;
-	}
-	return (nbr_elements);
-}
-
 static int	handle_sign(const char **str)
 {
 	int	sign;
@@ -89,7 +58,7 @@ int	parse_string(const char *str, t_dnode **dlist, hash_table *ht)
 	while (*str)
 	{
 		str = skip(str, is_space);
-		if (*str == '\0')
+		if (!*str)
 			break ;
 		if (parse_number(&str, &num) == ERROR)
 			return (ERROR);
@@ -106,4 +75,34 @@ int	parse_string(const char *str, t_dnode **dlist, hash_table *ht)
 		count++;
 	}
 	return (count);
+}
+
+int	check_input(int argc, char *argv[], t_stacks *stacks)
+{
+	int			i;
+	int			result;
+	int			nbr_elements;
+	hash_table	ht;
+
+	if (argc < 2)
+	{
+		printf("Error: Not enough arguments provided.\n");
+		return (ERROR);
+	}
+	if (hash_table_init(&ht) == ERROR)
+    	return (ERROR);  
+	nbr_elements = 0;
+	i = 1;
+	while (i < argc)
+	{
+		result = parse_string(argv[i], &stacks->a, &ht);
+		if (result == ERROR)
+		{
+			printf("Error: Invalid input in argument %d.\n", i);
+			return (ERROR);
+		}
+		nbr_elements += result;
+		i++;
+	}
+	return (nbr_elements);
 }
