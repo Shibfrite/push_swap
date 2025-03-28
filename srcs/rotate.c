@@ -1,18 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   rotate.c                                            :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/28 13:25:41 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/28 13:25:43 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 static void	rotate_print(t_stacks *stacks, int rotation, char *op)
 {
-	if (!stacks || !rotation)
+	if (!stacks || !rotation || op[0] != 'r')
 		return ;
-	if (!strcmp(op, "ra"))
+	if (op[1] == 'a' || op[1] == 'r')
 		ft_dlst_rotate(&stacks->a, rotation);
-	else if (!strcmp(op, "rb"))
+	if (op[1] == 'b' || op[1] == 'r')
 		ft_dlst_rotate(&stacks->b, rotation);
-	else
-	{
-		ft_dlst_rotate(&stacks->a, rotation);
-		ft_dlst_rotate(&stacks->b, rotation);
-	}
 }
 
 void	ra(t_stacks *stacks, int rotate)

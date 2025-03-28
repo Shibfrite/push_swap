@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   main.c                                              :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/28 16:39:55 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/28 16:40:25 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 int	main(int argc, char *argv[])
@@ -10,10 +22,9 @@ int	main(int argc, char *argv[])
 	nbr_elements = check_input(argc, argv, &stacks);
 	if (nbr_elements == ERROR)
 		return (0);
-	print_list(stacks.a); //DEBUG
 	sort(nbr_elements, &stacks);
-	print_list(stacks.a); //DEBUG
 	ft_dlstclear(&stacks.a, NULL);
 	ft_dlstclear(&stacks.b, NULL);
 	return (SUCCESS);
 }
+//print_list(stacks.a); //DEBUG

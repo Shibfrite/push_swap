@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   sort.c                                              :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/27 15:58:39 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/28 16:33:44 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 void	sort_three(t_stacks *stacks, t_dnode **operations_list)
@@ -55,25 +67,35 @@ void	sort_turk(t_stacks *stacks, t_dnode **operations_list, int total)
 void	sort_five(t_stacks *stacks, t_dnode **operations_list, int total)
 {
 	int	closest;
+	int	var;
+	int current_total;
 
-	printf("sort_five\n");
 	add_operation(operations_list, stacks, "pb", 1);
 	add_operation(operations_list, stacks, "pb", 1);
 	sort_three(stacks, operations_list);
-	closest = lowest_cost_index(stacks->a, stacks->b, 3);
-	printf("%d\n", closest);
-	add_operation(operations_list, stacks, "ra", closest);
-	add_operation(operations_list, stacks, "pa", 1);
-	closest = lowest_cost_index(stacks->a, stacks->b, 3);
-	add_operation(operations_list, stacks, "ra", closest);
-	add_operation(operations_list, stacks, "pa", 1);
-	closest = find_max_index(stacks->a);
-	add_operation(operations_list, stacks, "ra", closest);
+	current_total = 3;
+	while (stacks->b)
+	{
+		closest = lowest_cost_index(stacks->b, stacks->a, 2);
+		add_operation(operations_list, stacks, "rb", closest);
+		var = find_target_position(stacks->b, stacks->a) + 1;
+		if (var <= current_total / 2)
+			add_operation(operations_list, stacks, "ra", var);
+		else
+			add_operation(operations_list, stacks, "rra", current_total - var);
+		add_operation(operations_list, stacks, "pa", 1);
+		current_total++;
+	}
+	closest = (find_max_index(stacks->a) + 1) % current_total;
+	if (closest <= current_total / 2)
+		add_operation(operations_list, stacks, "ra", closest);
+	else
+		add_operation(operations_list, stacks, "rra", current_total - closest);
 }
 
 void	sort_any(t_stacks *stacks, int total)
 {
-	t_dnode *operations_list;
+	t_dnode	*operations_list;
 
 	operations_list = NULL;
 	if (total == 3)
@@ -89,13 +111,12 @@ void	sort_any(t_stacks *stacks, int total)
 
 void	sort(int nbr_elements, t_stacks *stacks)
 {
+	if (is_sorted(stacks->a))
+		return ;
 	if (nbr_elements == 2)
 	{
-		if (!is_sorted(stacks->a))
-		{
-			ft_putendl_fd("sa", 1);
-			sa(stacks);
-		}
+		ft_putendl_fd("sa", 1);
+		sa(stacks);
 		return ;
 	}
 	sort_any(stacks, nbr_elements);

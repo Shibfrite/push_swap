@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   rotations.c                                         :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/28 13:26:01 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/28 16:33:02 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 static int	handle_ra_rb(t_dnode **head, t_dnode *current,
@@ -111,12 +123,12 @@ int	optimize_rotations(t_dnode **head, t_dnode *current, int total)
 		return (0);
 	curr_op = (t_operation *)current->data;
 	next_op = (t_operation *)current->next->data;
-	if (handle_rot(current, curr_op, total))
-		return (1);
-	if (handle_ra_rb(head, current, curr_op, next_op))
-		return (1);
 	if (handle_ra_rra(head, current, curr_op, next_op))
 		return (1);
+	//if (handle_rot(current, curr_op, total))
+	//	return (1);
+	//if (handle_ra_rb(head, current, curr_op, next_op))
+	//	return (1);
 	if (handle_rb_rrb(head, current, curr_op, next_op))
 		return (1);
 	if (handle_rr_rrr(head, current, curr_op, next_op))

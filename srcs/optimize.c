@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   optimize.c                                          :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/27 16:15:31 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/28 16:21:10 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 void	delete_node(t_dnode **head, t_dnode *node_to_delete)
@@ -21,8 +33,9 @@ void	update_node_content(t_dnode *node,
 	if (!node || !node->data)
 		return ;
 	op = (t_operation *)node->data;
-	free(op->name);
 	op->name = strdup(new_name);
+	if (!op->name)
+		exit(1);
 	op->rotation_count = new_rotation_count;
 }
 
@@ -38,7 +51,7 @@ int	optimize_swaps(t_dnode **head, t_dnode *current)
 	t_operation	*curr_op;
 	t_operation	*next_op;
 
-	if (!current || !current->next)
+	if (!*head || !current || !current->next)
 		return (0);
 	curr_op = (t_operation *)current->data;
 	next_op = (t_operation *)current->next->data;
@@ -70,23 +83,13 @@ void	optimize_operations(t_dnode **head, int total)
 	changes_made = 1;
 	while (changes_made)
 	{
-		changes_made = 0;
-		current = *head;
-		while (current && current->next)
+	    changes_made = 0;
+	    current = *head;
+	    while (current && current->next)
 		{
-			if (optimize_swaps(head, current))
-			{
-				changes_made = 1;
-				current = current->next;
-				continue ;
-			}
-			if (optimize_rotations(head, current, total))
-			{
-				changes_made = 1;
-				current = current->next;
-				continue ;
-			}
-			current = current->next;
-		}
-	}
+	        if (optimize_swaps(head, current) || optimize_rotations(head, current, total))
+	            changes_made = 1;
+        current = current->next;
+    }
+}
 }

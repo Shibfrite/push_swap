@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   operations.c                                        :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/27 16:49:26 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/28 16:32:44 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 void	execute_single_operation(t_stacks *stacks,
@@ -33,18 +45,22 @@ void	add_operation(t_dnode **head, t_stacks *stacks,
 	t_operation	*op;
 	t_dnode		*new_node;
 
+	if (!rotation_count)
+		return ;
 	op = malloc(sizeof(t_operation));
 	if (!op)
-		return ;
+		exit(1);
 	execute_single_operation(stacks, operation, rotation_count);
 	op->name = strdup(operation);
+	if (!op->name)
+		exit(1);
 	op->rotation_count = rotation_count;
 	new_node = ft_dlstnew(op);
 	if (!new_node)
 	{
 		free(op->name);
 		free(op);
-		return ;
+		exit(1);
 	}
 	ft_dlstadd_back(head, new_node);
 }

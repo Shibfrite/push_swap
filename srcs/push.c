@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*										*/
 /*							:::	  ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   push.c                                              :+:    :+:           */
 /*							+:+ +:+	 +:+	 */
 /*   By: makurek <marvin@42.fr>			 +#+  +:+	   +#+	*/
 /*						+#+#+#+#+#+   +#+	   */
 /*   Created: 2024/12/23 14:07:37 by makurek	   #+#	#+#		 */
-/*   Updated: 2025/01/24 16:01:34 by makurek          ###   ########.fr       */
+/*   Updated: 2025/03/27 18:04:50 by makurek        ########   odam.nl        */
 /*										*/
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static void	push(t_dnode **first_stack, t_dnode **second_stack)
 
 static void	push_print(t_stacks *stacks, char *op)
 {
-	if (!stacks)
+	if (!stacks || op[0] != 'p')
 		return ;
-	if (!strcmp(op, "pa"))
+	if (op[1] == 'a')
 		push(&stacks->b, &stacks->a);
-	if (!strcmp(op, "pb"))
+	else if (op[1] == 'b')
 		push(&stacks->a, &stacks->b);
 }
 

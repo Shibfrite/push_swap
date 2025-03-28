@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*																			*/
 /*														:::	  ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   swap.c                                              :+:    :+:           */
 /*													+:+ +:+		 +:+	 */
 /*   By: makurek <marvin@42.fr>					 +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2024/12/23 14:07:48 by makurek		   #+#	#+#			 */
-/*   Updated: 2025/01/24 16:03:03 by makurek          ###   ########.fr       */
+/*   Updated: 2025/03/27 18:02:24 by makurek        ########   odam.nl        */
 /*																			*/
 /* ************************************************************************** */
 
@@ -32,17 +32,12 @@ static void	swap(t_dnode **head)
 
 static void	swap_print(t_stacks *stacks, char *op)
 {
-	if (!stacks)
+	if (!stacks || op[0] != 's')
 		return ;
-	if (!strcmp(op, "sa"))
+	if (op[1] == 'a' || op[1] == 's')
 		swap(&stacks->a);
-	else if (!strcmp(op, "sb"))
+	if (op[1] == 'b' || op[1] == 's')
 		swap(&stacks->b);
-	else
-	{
-		swap(&stacks->a);
-		swap(&stacks->b);
-	}
 }
 
 void	sa(t_stacks *stacks)

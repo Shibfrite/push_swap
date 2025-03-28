@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   parse.c                                             :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/28 13:23:15 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/28 16:38:59 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 static int	handle_sign(const char **str)
@@ -90,7 +102,7 @@ int	check_input(int argc, char *argv[], t_stacks *stacks)
 		return (ERROR);
 	}
 	if (hash_table_init(&ht) == ERROR)
-    	return (ERROR);  
+		return (ERROR);
 	nbr_elements = 0;
 	i = 1;
 	while (i < argc)
