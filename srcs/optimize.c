@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                         ::::::::           */
+/*																			*/
+/*														 ::::::::		   */
 /*   optimize.c                                          :+:    :+:           */
-/*                                                      +:+                   */
-/*   By: makurek <marvin@42.fr>                        +#+                    */
-/*                                                    +#+                     */
-/*   Created: 2025/03/27 16:15:31 by makurek        #+#    #+#                */
-/*   Updated: 2025/03/28 16:21:10 by makurek        ########   odam.nl        */
-/*                                                                            */
+/*													  +:+				   */
+/*   By: makurek <marvin@42.fr>						+#+					*/
+/*													+#+					 */
+/*   Created: 2025/03/27 16:15:31 by makurek		#+#	#+#				*/
+/*   Updated: 2025/03/31 16:52:47 by makurek        ########   odam.nl        */
+/*																			*/
 /* ************************************************************************** */
 
 #include "push_swap.h"
@@ -33,7 +33,7 @@ void	update_node_content(t_dnode *node,
 	if (!node || !node->data)
 		return ;
 	op = (t_operation *)node->data;
-	op->name = strdup(new_name);
+	op->name = ft_strdup(new_name);
 	if (!op->name)
 		exit(1);
 	op->rotation_count = new_rotation_count;
@@ -42,8 +42,8 @@ void	update_node_content(t_dnode *node,
 int	check_operation_pair(const char *op1,
 			const char *op2, const char *val1, const char *val2)
 {
-	return ((!strcmp(op1, val1) && !strcmp(op2, val2))
-		|| (!strcmp(op1, val2) && !strcmp(op2, val1)));
+	return ((!ft_strcmp(op1, val1) && !ft_strcmp(op2, val2))
+		|| (!ft_strcmp(op1, val2) && !ft_strcmp(op2, val1)));
 }
 
 int	optimize_swaps(t_dnode **head, t_dnode *current)
@@ -55,11 +55,11 @@ int	optimize_swaps(t_dnode **head, t_dnode *current)
 		return (0);
 	curr_op = (t_operation *)current->data;
 	next_op = (t_operation *)current->next->data;
-	if (!strcmp(curr_op->name, next_op->name))
+	if (!ft_strcmp(curr_op->name, next_op->name))
 	{
-		if (!strcmp(curr_op->name, "sa")
-			|| !strcmp(curr_op->name, "sb")
-			|| !strcmp(curr_op->name, "ss"))
+		if (!ft_strcmp(curr_op->name, "sa")
+			|| !ft_strcmp(curr_op->name, "sb")
+			|| !ft_strcmp(curr_op->name, "ss"))
 		{
 			delete_node(head, current->next);
 			delete_node(head, current);
@@ -83,13 +83,14 @@ void	optimize_operations(t_dnode **head, int total)
 	changes_made = 1;
 	while (changes_made)
 	{
-	    changes_made = 0;
-	    current = *head;
-	    while (current && current->next)
+		changes_made = 0;
+		current = *head;
+		while (current && current->next)
 		{
-	        if (optimize_swaps(head, current) || optimize_rotations(head, current, total))
-	            changes_made = 1;
-        current = current->next;
-    }
-}
+			if (optimize_swaps(head, current)
+				|| optimize_rotations(head, current, total))
+				changes_made = 1;
+			current = current->next;
+		}
+	}
 }

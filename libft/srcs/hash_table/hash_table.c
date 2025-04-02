@@ -1,40 +1,57 @@
+/* ************************************************************************** */
+/*																			*/
+/*														 ::::::::		   */
+/*   hash_table.c                                        :+:    :+:           */
+/*													  +:+				   */
+/*   By: makurek <marvin@42.fr>						+#+					*/
+/*													+#+					 */
+/*   Created: 2025/03/31 14:21:51 by makurek		#+#	#+#				*/
+/*   Updated: 2025/03/31 15:53:03 by makurek        ########   odam.nl        */
+/*																			*/
+/* ************************************************************************** */
+
 #include "hash_table.h"
 
-int hash_table_init(hash_table *ht) {
-    ht->size = TABLE_SIZE;
-    ht->hash = hash_multiplication;
-    ht->compare = compare_strings;
-    ht->resolve_collision = chaining_resolution;
-    ht->lookup_method = chaining_lookup;
-    ht->table = calloc(ht->size, sizeof(void *));
+int	hash_table_init(t_hash_table *ht)
+{
+	ht->size = TABLE_SIZE;
+	ht->hash = hash_multiplication;
+	ht->compare = compare_strings;
+	ht->resolve_collision = chaining_resolution;
+	ht->lookup_method = chaining_lookup;
+	ht->table = ft_calloc(ht->size, sizeof(void *));
 	if (!ht->table)
 		return (ERROR);
 	return (SUCCESS);
 }
 
-void	hash_table_print(hash_table *ht)
+void	hash_table_print(t_hash_table *ht)
 {
 	size_t	i;
+	t_node	*current;
 
 	if (!ht)
 		return ;
-	printf("Start\n");
+	ft_putendl("Start");
 	i = 0;
 	while (i < TABLE_SIZE)
 	{
-		printf("\t%zu\t", i);
-		node *current = ht->table[i++];
+		ft_putstr("\t");
+		ft_putnbr(i);
+		ft_putstr("\t");
+		current = ht->table[i++];
 		while (current)
 		{
-			printf("%s -> ", (char *)current->data);
+			ft_putstr((char *)current->data);
+			ft_putstr(" -> ");
 			current = current->next;
 		}
-		printf("NULL\n");
+		ft_putendl("NULL");
 	}
-	printf("End\n");
+	ft_putendl("End");
 }
 
-int hash_table_insert(hash_table *ht, void *data, size_t data_size)
+int	hash_table_insert(t_hash_table *ht, void *data, size_t data_size)
 {
 	void	*new_data;
 	int		result;
@@ -51,67 +68,12 @@ int hash_table_insert(hash_table *ht, void *data, size_t data_size)
 	return (result);
 }
 
-void *hash_table_lookup(hash_table *ht, const void *key)
+void	*hash_table_lookup(t_hash_table *ht, const void *key)
 {
 	size_t	index;
-
-	if (!ht || !key)
-		return NULL;
-	index = ht->hash(key);
-	return (ht->lookup_method(ht, index, key));
-}
-
-void *hash_table_delete(hash_table *ht, const void *key)
-{
-	size_t	index;
-	node	*current;
-	node	*prev;
-	void	*data;
 
 	if (!ht || !key)
 		return (NULL);
 	index = ht->hash(key);
-	current = ht->table[index];
-	prev = NULL;
-	while (current)
-	{
-		if (!ht->compare(current->data, key))
-		{
-			data = current->data;
-			if (prev)
-				prev->next = current->next;
-			else
-				ht->table[index] = current->next;
-			free(current);
-			return (data);
-		}
-		prev = current;
-		current = current->next;
-	}
-	return (NULL);
-}
-
-void hash_table_destroy(hash_table *ht)
-{
-    node	*current;
-    node	*next;
-    size_t	i;
-
-    i = 0;
-    if (!ht)
-        return ;
-    while (i < ht->size)
-	{
-        current = ht->table[i];
-        while (current)
-		{
-            next = current->next;
-            free(current->data);
-            free(current);
-            current = next;
-        }
-        i++;
-    }
-    free(ht->table);
-    free(ht);
+	return (ht->lookup_method(ht, index, key));
 }

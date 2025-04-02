@@ -1,27 +1,16 @@
 /* ************************************************************************** */
-/*																			*/
-/*														 ::::::::		   */
-/*   support_sort.c                                      :+:    :+:           */
-/*													  +:+				   */
-/*   By: makurek <marvin@42.fr>						+#+					*/
-/*													+#+					 */
-/*   Created: 2025/03/27 15:59:14 by makurek		#+#	#+#				*/
-/*   Updated: 2025/03/28 18:49:04 by makurek        ########   odam.nl        */
-/*																			*/
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   target_calculation.c                                :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/31 13:12:17 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/31 16:49:31 by makurek        ########   odam.nl        */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-int	is_sorted(t_dnode *stack)
-{
-	while (stack && stack->next)
-	{
-		if (*(int *)stack->data > *(int *)stack->next->data)
-			return (0);
-		stack = stack->next;
-	}
-	return (1);
-}
 
 int	determin_closest_data(int target, t_dnode *current)
 {
@@ -60,48 +49,47 @@ int	get_closest_index(t_dnode *first, t_dnode *second)
 	return (closest_index);
 }
 
-void	temp_name()
+int	find_position(t_dnode *current, int *target_pos,
+			int *max_pos, int node_data)
 {
-
-}
-
-int	find_target_position(t_dnode *node, t_dnode *target_head)
-{
-	t_dnode	*current;
-	int		target_pos;
 	int		target_val;
 	int		max_val;
-	int		max_pos;
 	int		pos;
 	int		current_data;
-	int		node_data;
 
-	if (!node || !target_head)
-		return (ERROR);
-	current = target_head;
 	pos = 0;
-	target_pos = 0;
 	target_val = INT_MIN;
 	max_val = INT_MIN;
-	max_pos = 0;
-	node_data = *(int *)node->data;
 	while (current)
 	{
 		current_data = *(int *)current->data;
 		if (current_data < node_data && current_data > target_val)
 		{
 			target_val = current_data;
-			target_pos = pos;
+			*target_pos = pos;
 		}
 		if (current_data > max_val)
 		{
 			max_val = current_data;
-			max_pos = pos;
+			*max_pos = pos;
 		}
 		current = current->next;
 		pos++;
 	}
-	if (target_val == INT_MIN)
+	return (target_val);
+}
+
+int	find_target_position(t_dnode *node, t_dnode *target_head)
+{
+	int		node_data;
+	int		max_pos;
+	int		target_pos;
+
+	if (!node || !target_head)
+		return (ERROR);
+	node_data = *(int *)node->data;
+	if (find_position(target_head, &target_pos, &max_pos,
+			*(int *)node->data) == INT_MIN)
 		return (max_pos);
 	return (target_pos);
 }
@@ -131,32 +119,4 @@ int	lowest_cost_index(t_dnode *head, t_dnode *target_stack, int total)
 		}
 	}
 	return (lowest_cost_index);
-}
-
-int	find_max_index(t_dnode *head)
-{
-	t_dnode	*current;
-	int		max_data;
-	int		max_index;
-	int		current_index;
-	int		current_data;
-
-	if (!head)
-		return (-1);
-	current = head;
-	max_data = *(int *)current->data;
-	max_index = 0;
-	current_index = 0;
-	while (current)
-	{
-		current_data = *(int *)current->data;
-		if (current_data > max_data)
-		{
-			max_data = current_data;
-			max_index = current_index;
-		}
-		current = current->next;
-		current_index++;
-	}
-	return (max_index);
 }

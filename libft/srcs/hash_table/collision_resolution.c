@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   collision_resolution.c                              :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: makurek <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/03/31 14:19:22 by makurek        #+#    #+#                */
+/*   Updated: 2025/03/31 14:33:42 by makurek        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "hash_table.h"
 
-void* chaining_lookup(hash_table *ht, size_t index, const void *key)
+void	*chaining_lookup(t_hash_table *ht, size_t index, const void *key)
 {
-	node	*current;
+	t_node	*current;
 
 	if (!ht || index >= ht->size)
 		return (NULL);
@@ -16,15 +28,15 @@ void* chaining_lookup(hash_table *ht, size_t index, const void *key)
 	return (NULL);
 }
 
-int chaining_resolution(hash_table *ht, size_t index, void *data)
+int	chaining_resolution(t_hash_table *ht, size_t index, void *data)
 {
-	node *new_node;
-	
+	t_node	*new_node;
+
 	if (!ht || index >= ht->size)
 		return (ERROR);
 	if (chaining_lookup(ht, index, data))
 		return (ERROR);
-	new_node = malloc(sizeof(node));
+	new_node = malloc(sizeof(t_node));
 	if (!new_node)
 		return (ERROR);
 	new_node->data = data;

@@ -11,7 +11,7 @@ LIBFT_DIR	:= libft
 SRC_FILES   := create_list.c remove_last_node.c create_node.c \
 	print_list.c swap.c ft_dlst_print.c parse.c optimize.c \
 	push.c  rotate.c main.c reverse_rotate.c operations.c \
-	rotations.c sort.c support_sort.c
+	rotations.c sort.c sort_utils.c target_calculation.c parse_utils.c
 SRC_PREFIX  := $(SRC_DIR)/
 SRCS        := $(addprefix $(SRC_PREFIX),$(SRC_FILES))
 

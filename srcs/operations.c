@@ -6,7 +6,7 @@
 /*   By: makurek <marvin@42.fr>                        +#+                    */
 /*                                                    +#+                     */
 /*   Created: 2025/03/27 16:49:26 by makurek        #+#    #+#                */
-/*   Updated: 2025/03/28 16:32:44 by makurek        ########   odam.nl        */
+/*   Updated: 2025/03/31 18:13:18 by makurek        ########   odam.nl        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,27 @@
 void	execute_single_operation(t_stacks *stacks,
 			const char *op_name, int rotation_count)
 {
-	if (!strcmp(op_name, "sa"))
+	if (!ft_strcmp(op_name, "sa"))
 		sa(stacks);
-	else if (!strcmp(op_name, "sb"))
+	else if (!ft_strcmp(op_name, "sb"))
 		sb(stacks);
-	else if (!strcmp(op_name, "ss"))
+	else if (!ft_strcmp(op_name, "ss"))
 		ss(stacks);
-	else if (!strcmp(op_name, "ra"))
+	else if (!ft_strcmp(op_name, "ra"))
 		ra(stacks, rotation_count);
-	else if (!strcmp(op_name, "rb"))
+	else if (!ft_strcmp(op_name, "rb"))
 		rb(stacks, rotation_count);
-	else if (!strcmp(op_name, "rr"))
+	else if (!ft_strcmp(op_name, "rr"))
 		rr(stacks, rotation_count);
-	else if (!strcmp(op_name, "rra"))
+	else if (!ft_strcmp(op_name, "rra"))
 		rra(stacks, rotation_count);
-	else if (!strcmp(op_name, "rrb"))
+	else if (!ft_strcmp(op_name, "rrb"))
 		rrb(stacks, rotation_count);
-	else if (!strcmp(op_name, "rrr"))
+	else if (!ft_strcmp(op_name, "rrr"))
 		rrr(stacks, rotation_count);
-	else if (!strcmp(op_name, "pa"))
+	else if (!ft_strcmp(op_name, "pa"))
 		pa(stacks);
-	else if (!strcmp(op_name, "pb"))
+	else if (!ft_strcmp(op_name, "pb"))
 		pb(stacks);
 }
 
@@ -51,7 +51,7 @@ void	add_operation(t_dnode **head, t_stacks *stacks,
 	if (!op)
 		exit(1);
 	execute_single_operation(stacks, operation, rotation_count);
-	op->name = strdup(operation);
+	op->name = ft_strdup(operation);
 	if (!op->name)
 		exit(1);
 	op->rotation_count = rotation_count;
