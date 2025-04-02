@@ -456,7 +456,7 @@ void	rrr(t_stacks *stacks, int rotate);
 
 //-----------------------------------------------------------------
 
-int		optimize_rotations(t_dnode **head, t_dnode *current, int total);
+int		optimize_rotations(t_dnode **head, t_dnode *current);
 //Input:
 //List head, current node, total elements.
 //Output:
@@ -566,7 +566,7 @@ void	sort_turk(t_stacks *stacks, t_dnode **operations_list, int total);
 //-----------------------------------------------------------------
 
 //Prototype:
-void	sort_five(t_stacks *stacks, t_dnode **operations_list, int total);
+void	sort_five(t_stacks *stacks, t_dnode **operations_list);
 //Input:
 //Stacks, operations list, total elements.
 //Output:
@@ -765,7 +765,7 @@ int		check_operation_pair(const char *op1, const char *op2,
 
 //-----------------------------------------------------------------
 
-void	optimize_operations(t_dnode **head, int total);
+void	optimize_operations(t_dnode **head);
 //Input:
 //List head, total elements (for rotation cost).  
 //Output:

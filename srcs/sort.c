@@ -6,7 +6,7 @@
 /*   By: makurek <marvin@42.fr>                        +#+                    */
 /*                                                    +#+                     */
 /*   Created: 2025/03/27 15:58:39 by makurek        #+#    #+#                */
-/*   Updated: 2025/03/31 18:08:46 by makurek        ########   odam.nl        */
+/*   Updated: 2025/04/02 20:12:50 by makurek        ########   odam.nl        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	sort_turk(t_stacks *stacks, t_dnode **operations_list, int total)
 	add_operation(operations_list, stacks, "ra", find_max_index(stacks->a) + 1);
 }
 
-void	sort_five(t_stacks *stacks, t_dnode **operations_list, int total)
+void	sort_five(t_stacks *stacks, t_dnode **operations_list)
 {
 	int	closest;
 	int	var;
@@ -101,10 +101,10 @@ void	sort_any(t_stacks *stacks, int total)
 	if (total == 3)
 		sort_three(stacks, &operations_list);
 	else if (total == 5)
-		sort_five(stacks, &operations_list, total);
+		sort_five(stacks, &operations_list);
 	else
 		sort_turk(stacks, &operations_list, total);
-	optimize_operations(&operations_list, total);
+	optimize_operations(&operations_list);
 	execute_operations(operations_list);
 	ft_dlstclear(&operations_list, free_operation);
 }

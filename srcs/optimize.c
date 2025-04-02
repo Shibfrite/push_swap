@@ -6,7 +6,7 @@
 /*   By: makurek <marvin@42.fr>						+#+					*/
 /*													+#+					 */
 /*   Created: 2025/03/27 16:15:31 by makurek		#+#	#+#				*/
-/*   Updated: 2025/03/31 16:52:47 by makurek        ########   odam.nl        */
+/*   Updated: 2025/04/02 20:08:11 by makurek        ########   odam.nl        */
 /*																			*/
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	optimize_swaps(t_dnode **head, t_dnode *current)
 	return (0);
 }
 
-void	optimize_operations(t_dnode **head, int total)
+void	optimize_operations(t_dnode **head)
 {
 	int		changes_made;
 	t_dnode	*current;
@@ -88,7 +88,7 @@ void	optimize_operations(t_dnode **head, int total)
 		while (current && current->next)
 		{
 			if (optimize_swaps(head, current)
-				|| optimize_rotations(head, current, total))
+				|| optimize_rotations(head, current))
 				changes_made = 1;
 			current = current->next;
 		}

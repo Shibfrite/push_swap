@@ -6,7 +6,7 @@
 /*   By: makurek <marvin@42.fr>                        +#+                    */
 /*                                                    +#+                     */
 /*   Created: 2025/03/28 13:26:01 by makurek        #+#    #+#                */
-/*   Updated: 2025/03/31 13:27:07 by makurek        ########   odam.nl        */
+/*   Updated: 2025/04/02 20:06:22 by makurek        ########   odam.nl        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	handle_rr_rrr(t_dnode **head, t_dnode *current,
 	return (1);
 }
 
-int	optimize_rotations(t_dnode **head, t_dnode *current, int total)
+int	optimize_rotations(t_dnode **head, t_dnode *current)
 {
 	t_operation	*curr_op;
 	t_operation	*next_op;

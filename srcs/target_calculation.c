@@ -6,7 +6,7 @@
 /*   By: makurek <marvin@42.fr>                        +#+                    */
 /*                                                    +#+                     */
 /*   Created: 2025/03/31 13:12:17 by makurek        #+#    #+#                */
-/*   Updated: 2025/03/31 16:49:31 by makurek        ########   odam.nl        */
+/*   Updated: 2025/04/02 20:14:39 by makurek        ########   odam.nl        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	determin_closest_data(int target, t_dnode *current)
 
 int	get_closest_index(t_dnode *first, t_dnode *second)
 {
-	int	target;
 	int	closest_index;
 
 	closest_index = determin_closest_data(*(int *)second->data, first);
@@ -81,13 +80,11 @@ int	find_position(t_dnode *current, int *target_pos,
 
 int	find_target_position(t_dnode *node, t_dnode *target_head)
 {
-	int		node_data;
-	int		max_pos;
-	int		target_pos;
+	int	max_pos;
+	int	target_pos;
 
 	if (!node || !target_head)
 		return (ERROR);
-	node_data = *(int *)node->data;
 	if (find_position(target_head, &target_pos, &max_pos,
 			*(int *)node->data) == INT_MIN)
 		return (max_pos);
