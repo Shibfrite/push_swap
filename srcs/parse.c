@@ -50,4 +50,4 @@ int	check_input(int argc, char *argv[], t_stacks *stacks)
 	result = process_arguments(argc, argv, stacks, &ht);
 	hash_table_destroy(&ht);
 	return (result);
-}	
+}

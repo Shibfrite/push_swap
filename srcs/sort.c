@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                         ::::::::           */
-/*   sort.c                                              :+:    :+:           */
-/*                                                      +:+                   */
-/*   By: makurek <marvin@42.fr>                        +#+                    */
-/*                                                    +#+                     */
-/*   Created: 2025/03/27 15:58:39 by makurek        #+#    #+#                */
-/*   Updated: 2025/04/02 20:12:50 by makurek        ########   odam.nl        */
-/*                                                                            */
+/*																			*/
+/*														 ::::::::		   */
+/*   sort.c											  :+:	:+:		   */
+/*													  +:+				   */
+/*   By: makurek <marvin@42.fr>						+#+					*/
+/*													+#+					 */
+/*   Created: 2025/03/27 15:58:39 by makurek		#+#	#+#				*/
+/*   Updated: 2025/04/02 20:12:50 by makurek		########   odam.nl		*/
+/*																			*/
 /* ************************************************************************** */
 
 #include "push_swap.h"
@@ -103,7 +103,7 @@ void	sort_any(t_stacks *stacks, int total)
 	else if (total == 5)
 		sort_five(stacks, &operations_list);
 	else
-		sort_turk(stacks, &operations_list, total);
+		radix_sort(stacks, &operations_list, total);
 	optimize_operations(&operations_list);
 	execute_operations(operations_list);
 	ft_dlstclear(&operations_list, free_operation);
@@ -111,7 +111,7 @@ void	sort_any(t_stacks *stacks, int total)
 
 void	sort(int nbr_elements, t_stacks *stacks)
 {
-	if (is_sorted(stacks->a))
+	if (is_sorted(stacks->a) == SUCCESS)
 		return ;
 	if (nbr_elements == 2)
 	{

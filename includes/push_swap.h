@@ -81,7 +81,8 @@ t_dnode	*remove_first_node(t_dnode **head);
 //Output:
 //Total number of elements parsed or ERROR.
 //Purpose:
-//Iterates through arguments, parses each string, and populates stack A.
+//Iterates through arguments, parses each string
+// and populates stack A using parse_string
 //Note:
 //Reports errors with argument index if parsing fails.
 
@@ -164,7 +165,174 @@ int		parse_string(const char *str, t_dnode **dlist, t_hash_table *ht);
 //Output:
 //Element count or ERROR.
 //Purpose:
-//Parses numbers from string, adds to list, checks duplicates.  
+//Parses numbers from string, adds to list, checks duplicates.
+// uses skip to pass spaces.
+//Note:
+//
+
+//-----------------------------------------------------------------
+
+
+//======sort.c======
+
+//-----------------------------------------------------------------
+
+void	sort_three(t_stacks *stack, t_dnode **operations_list);
+//Input:
+//Stacks, list to track operations.
+//Output:
+//None. 
+//Purpose:
+//Sorts 3-element stack with minimal swaps/rotations.
+//Note:
+//
+
+//-----------------------------------------------------------------
+
+void	sort_turk(t_stacks *stacks, t_dnode **operations_list, int total);
+//Input:
+//Stacks, operations list, total elements.
+//Output:
+//None. 
+//Purpose:
+//Sorts medium/large stacks by pushing to B and reinserting optimally.
+//Note:
+//`find_max_index` may not work for final rotation.
+
+//-----------------------------------------------------------------
+
+//Prototype:
+void	sort_five(t_stacks *stacks, t_dnode **operations_list);
+//Input:
+//Stacks, operations list, total elements.
+//Output:
+//None. 
+//Purpose:
+//Sorts 5-element stack by pushing 2 to B, sorting 3, then reinserting.
+//Note:
+
+//-----------------------------------------------------------------
+
+//Prototype:
+void	sort_any(t_stacks *stacks, int total);
+//Input:
+//Stacks, total elements.
+//Output:
+//None.
+//Purpose:
+//Dispatches sorting based on stack size (3/5/other).
+//Note:
+//
+
+//-----------------------------------------------------------------
+
+//Prototype:
+void	sort(int nbr_elements, t_stacks *stacks);
+//Input:
+//Element count, stacks.
+//Output:
+//None.
+//Purpose:
+//Handles 2-element case, delegates others to `sort_any`.
+//Note:
+//
+
+//-----------------------------------------------------------------
+
+//  ======sort_radix.c======
+
+//-----------------------------------------------------------------
+
+//Prototype:
+//static int		count_stack_size(t_dnode *stack);
+//Input:
+//A doubly linked list (stack).
+//Output:
+//1 if sorted in ascending order, 0 otherwise.
+//Purpose:
+//Checks whether the stack is sorted in ascending order.
+//Note:
+//Assumes that the stack contains integers.
+
+//-----------------------------------------------------------------
+
+//Prototype:
+//static void     radix_sort_stack_b(t_stacks *stacks, t_dnode **operations_list, int j);
+//Input:
+//A doubly linked list (stack).
+//Output:
+//1 if sorted in ascending order, 0 otherwise.
+//Purpose:
+//Checks whether the stack is sorted in ascending order.
+//Note:
+//Assumes that the stack contains integers.
+
+//-----------------------------------------------------------------
+
+//Prototype:
+//static int  calculate_bit_size(int num)
+//Input:
+//A doubly linked list (stack).
+//Output:
+//1 if sorted in ascending order, 0 otherwise.
+//Purpose:
+//Checks whether the stack is sorted in ascending order.
+//Note:
+//Assumes that the stack contains integers.
+
+//-----------------------------------------------------------------
+
+//Prototype:
+//static int  find_max_in_dlist(t_dnode *head)
+//Input:
+//A doubly linked list (stack).
+//Output:
+//1 if sorted in ascending order, 0 otherwise.
+//Purpose:
+//Checks whether the stack is sorted in ascending order.
+//Note:
+//Assumes that the stack contains integers.
+
+//-----------------------------------------------------------------
+
+//Prototype:
+void    radix_sort(t_stacks *stacks, t_dnode **operations_list, int total);
+//Input:
+//A doubly linked list (stack).
+//Output:
+//1 if sorted in ascending order, 0 otherwise.
+//Purpose:
+//Checks whether the stack is sorted in ascending order.
+//Note:
+//Assumes that the stack contains integers.
+
+//-----------------------------------------------------------------
+
+//  ======sort_utils.c======
+
+//-----------------------------------------------------------------
+
+//Prototype:
+int		is_sorted(t_dnode *stack);
+//Input:
+//A doubly linked list (stack).
+//Output:
+//1 if sorted in ascending order, 0 otherwise.
+//Purpose:
+//Checks whether the stack is sorted in ascending order.
+//Note:
+//Assumes that the stack contains integers.
+
+//-----------------------------------------------------------------
+
+//Prototype:
+int		find_max_index(t_dnode *head);
+//Input:
+//Head of a doubly linked list (stack).
+//Output:
+//Index of the maximum value or -1 if the stack is empty.
+//Purpose:
+//Finds the index of the largest value in the stack.
 //Note:
 //
 
@@ -175,7 +343,6 @@ int		parse_string(const char *str, t_dnode **dlist, t_hash_table *ht);
 //-----------------------------------------------------------------
 
 //Prototype:
-//
 //void execute_single_operation(t_stacks *stacks,
 //						const char *op_name, int rotation_count)  
 //Input:
@@ -189,6 +356,7 @@ int		parse_string(const char *str, t_dnode **dlist, t_hash_table *ht);
 
 //-----------------------------------------------------------------
 
+//Prototype:
 void	add_operation(t_dnode **head, t_stacks *stack,
 			char *operation, int rotation_count);
 //Input:
@@ -536,103 +704,6 @@ void	ss(t_stacks *stacks);
 //
 
 //-----------------------------------------------------------------
-
-//======sort.c======
-
-//-----------------------------------------------------------------
-
-void	sort_three(t_stacks *stack, t_dnode **operations_list);
-//Input:
-//Stacks, list to track operations.
-//Output:
-//None. 
-//Purpose:
-//Sorts 3-element stack with minimal swaps/rotations.
-//Note:
-//
-
-//-----------------------------------------------------------------
-
-void	sort_turk(t_stacks *stacks, t_dnode **operations_list, int total);
-//Input:
-//Stacks, operations list, total elements.
-//Output:
-//None. 
-//Purpose:
-//Sorts medium/large stacks by pushing to B and reinserting optimally.
-//Note:
-//`find_max_index` may not work for final rotation.
-
-//-----------------------------------------------------------------
-
-//Prototype:
-void	sort_five(t_stacks *stacks, t_dnode **operations_list);
-//Input:
-//Stacks, operations list, total elements.
-//Output:
-//None. 
-//Purpose:
-//Sorts 5-element stack by pushing 2 to B, sorting 3, then reinserting.
-//Note:
-
-//-----------------------------------------------------------------
-
-//Prototype:
-void	sort_any(t_stacks *stacks, int total);
-//Input:
-//Stacks, total elements.
-//Output:
-//None.
-//Purpose:
-//Dispatches sorting based on stack size (3/5/other).
-//Note:
-//
-
-//-----------------------------------------------------------------
-
-//Prototype:
-void	sort(int nbr_elements, t_stacks *stacks);
-//Input:
-//Element count, stacks.
-//Output:
-//None.
-//Purpose:
-//Handles 2-element case, delegates others to `sort_any`.
-//Note:
-//
-
-//-----------------------------------------------------------------
-
-//  ======sort_utils.c======
-
-//-----------------------------------------------------------------
-
-//Prototype:
-int		is_sorted(t_dnode *stack);
-//Input:
-//A doubly linked list (stack).
-//Output:
-//1 if sorted in ascending order, 0 otherwise.
-//Purpose:
-//Checks whether the stack is sorted in ascending order.
-//Note:
-//Assumes that the stack contains integers.
-
-//-----------------------------------------------------------------
-
-//Prototype:
-int		find_max_index(t_dnode *head);
-//Input:
-//Head of a doubly linked list (stack).
-//Output:
-//Index of the maximum value or -1 if the stack is empty.
-//Purpose:
-//Finds the index of the largest value in the stack.
-//Note:
-//
-
-//-----------------------------------------------------------------
-
 //  ======target_calculations.c======
 
 //-----------------------------------------------------------------

@@ -11,7 +11,8 @@ LIBFT_DIR	:= libft
 SRC_FILES   := create_list.c remove_last_node.c create_node.c \
 	print_list.c swap.c ft_dlst_print.c parse.c optimize.c \
 	push.c  rotate.c main.c reverse_rotate.c operations.c \
-	rotations.c sort.c sort_utils.c target_calculation.c parse_utils.c
+	rotations.c sort.c sort_utils.c target_calculation.c parse_utils.c \
+	sort_radix.c
 SRC_PREFIX  := $(SRC_DIR)/
 SRCS        := $(addprefix $(SRC_PREFIX),$(SRC_FILES))
 
@@ -38,6 +39,8 @@ $(DIRS):
 	mkdir -p $@
 	echo "Created directory: $@"
 
+wasm:
+	docker run --rm -v $(shell pwd):/src emscripten/emsdk emcc $(SRCS) $(INC) $(LIBFT) -o $(NAME).wasm -s STANDALONE_WASM=1 -s EXPORTED_FUNCTIONS="['_main']" -s ERROR_ON_UNDEFINED_SYMBOLS=0
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR) -s
 

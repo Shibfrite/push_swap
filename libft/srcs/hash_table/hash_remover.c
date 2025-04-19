@@ -19,6 +19,7 @@ static void	*find_and_remove_node(t_node **head, const void *key,
 	t_node	*prev;
 	void	*data;
 
+	current = *head;
 	while (current)
 	{
 		if (!compare(current->data, key))

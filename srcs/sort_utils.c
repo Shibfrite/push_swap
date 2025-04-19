@@ -17,10 +17,10 @@ int	is_sorted(t_dnode *stack)
 	while (stack && stack->next)
 	{
 		if (*(int *)stack->data > *(int *)stack->next->data)
-			return (0);
+			return (ERROR);
 		stack = stack->next;
 	}
-	return (1);
+	return (SUCCESS);
 }
 
 int	find_max_index(t_dnode *head)
@@ -32,7 +32,7 @@ int	find_max_index(t_dnode *head)
 	int		current_data;
 
 	if (!head)
-		return (-1);
+		return (ERROR);
 	current = head;
 	max_data = *(int *)current->data;
 	max_index = 0;
